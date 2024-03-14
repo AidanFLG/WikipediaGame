@@ -1,15 +1,64 @@
-# Aidan lewis-Grenz
+Author: Tony Bautista & Aidan Lewis Grenz
 
-## In enhancing the Breadth-First Search (BFS) algorithm of the Wikipedia game, a strategic heuristic is introduced to streamline the search process. This heuristic focuses on prioritizing content keywords, offering a shortcut that directs the algorithm towards links more likely to lead to the intended article. By analyzing the semantic context of Wikipedia pages and identifying relevant keywords, the algorithm dynamically adjusts its exploration strategy. Integrating this heuristic into the BFS algorithm optimizes search efficiency without compromising thoroughness. Challenges include accurately identifying keywords and optimizing performance, which will be addressed through comprehensive testing. Furthermore, future updates may explore the integration of machine learning techniques to further refine this process. Ultimately, this keyword-focused heuristic aims to enhance user navigation within Wikipedia's vast repository of knowledge, providing a more efficient and enjoyable browsing experience.
+Wikipedia Game Improvement Proposal (WGIP)
 
-### Keyword Extraction: Develop a method to extract keywords or key phrases from Wikipedia articles. This could involve natural language processing techniques such as tokenization, part-of-speech tagging, and named entity recognition to identify important terms within the text.
+Background
+The Wikipedia Game is a web-based game that challenges players to reach a specific Wikipedia article from a given starting article, using the fewest hyperlink clicks. The current algorithm guiding this process is a simple breadth-first search (BFS), which treats all links equally and does not consider the content within the pages.
 
-### Content Analysis: Analyze the content of Wikipedia articles to determine their relevance to the starting and ending pages. Consider factors such as semantic similarity, topic overlap, and contextual relevance to assess the likelihood that a given article is on the optimal path.
+Rationale
+While guaranteeing a solution, the BFS algorithm does not account for the relevance of content when selecting links. This often results in an inefficient path and a longer search time. Incorporating a content-aware heuristic can make the search more targeted and efficient.
 
-### Heuristic Integration: Integrate the keyword-focused heuristic into the BFS algorithm by modifying the priority queue used to store the search frontier. Assign higher priority to links leading to articles containing relevant keywords or content related to the target article.
+Improvement Overview
+The proposed improvement is to enhance the BFS algorithm with a heuristic approach based on keyword relevance. This would allow the game to prioritize links that are more likely to lead to the target article, based on the content similarity.
 
-### Performance Optimization: Optimize the keyword extraction and content analysis processes to ensure efficient runtime performance. This may involve caching, parallelization, or other optimization techniques to minimize computational overhead.
+Methodology
+The methodology for the improvement includes:
+1. Keyword Extraction: Analyze the target page to extract critical terms that signify its content.
+2. Content Analysis: Upon visiting a new page, examine the content of its links.
+3. Priority Queue: Modify the BFS to prioritize links that include the target page's keywords.
+4. Fallback: Maintain a regular queue for links without keywords to ensure the algorithm remains complete.
 
-### Testing and Validation: Conduct comprehensive testing to evaluate the effectiveness of the heuristic in improving search efficiency and reducing the number of steps required to reach the target article. Use a diverse set of starting and ending pages to ensure the heuristic's generalizability.
+Pseudo-code:
+function heuristicBFS(startPage, targetPageKeywords) {
+    queue = new PriorityQueue()
+    visited = new Set()
 
-### Future Enhancements: Consider further enhancements, such as integrating machine learning algorithms to dynamically adjust the heuristic based on user feedback or historical search patterns. This iterative approach allows for continuous refinement and improvement of the search strategy.
+    queue.add(startPage)
+
+    while not queue.isEmpty() {
+        currentPage = queue.pop()
+
+        if currentPage == targetPage {
+            return reconstructPath(currentPage)
+        }
+
+        visited.add(currentPage)
+
+        for link in extractLinks(currentPage) {
+            if link not in visited {
+                relevance = calculateRelevance(link, targetPageKeywords)
+                queue.addWithPriority(link, relevance)
+            }
+        }
+    }
+}
+
+Potential Challenges
+-Keyword Extraction: Determining the most relevant keywords from the target page can be challenging and may require fine-tuning.
+- Performance: Analyzing the content of each link for keywords can introduce performance overhead.
+- Accuracy: The heuristic may prioritize contextually relevant links that lead away from the target, potentially introducing inefficiencies.
+Completeness: It is critical to ensure that the heuristic-enhanced BFS algorithm remains complete and can find a path if one exists.
+
+Testing and Validation
+To ensure the proposed algorithm performs as intended, rigorous testing must be conducted. This would include:
+
+1. Benchmarking: Compare the new algorithm against the current BFS regarding the number of steps to reach the target page and the time taken for several test cases.
+2. Edge Cases: Test scenarios where the target page is obscure or has few incoming links to ensure the heuristic does not compromise the search.
+3. User Trials: Implement the improved algorithm in a test environment and measure user success rates and search times.
+
+Future Work
+Future enhancements could include machine learning models to predict link relevance or graph database technologies to optimize link traversal.
+
+Conclusion
+The proposal aims to enhance search efficiency and user experience in the Wikipedia Game without extensive modifications by integrating a content-aware heuristic. Special libraries for NLP, like NLTK or spaCy, and word embedding models, such as Word2Vec or GloVe, may be considered for advanced analysis and optimization.
+
