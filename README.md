@@ -6,6 +6,10 @@ At the time of this writing available at https://wikipiediagame.azurewebsites.ne
 
 (these instructions should work under GNU/Linux and Macos and WSL)
 
+https://
+
+https://aidanflg.github.io//blob/main/server/server.py/
+
 Prerequisites: Python
 
 ```
