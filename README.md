@@ -8,7 +8,7 @@ At the time of this writing available at https://wikipiediagame.azurewebsites.ne
 
 https://
 
-https://aidanflg.github.io//server/server.py/
+https://aidanflg.github.io/server/server.py/
 
 Prerequisites: Python
 
